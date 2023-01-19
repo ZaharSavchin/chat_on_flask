@@ -1,7 +1,9 @@
 import os
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-    render_template, flash
+    render_template, flash, template_rendered, message_flashed
+import signals
+from signals import my_signal
 
 
 DATABASE = '/tmp/chat_on_flask.db'
@@ -93,6 +95,9 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
+
+
+my_signal(app, template_rendered, message_flashed)
 
 
 if __name__ == '__main__':
